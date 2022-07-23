@@ -3,14 +3,18 @@ import chalk from 'chalk';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import crudRouter from './routes/crudRouter.js';
+import categoriesRouter from './routes/categoriesRouter.js';
+import gamesRouter from './routes/gamesRouter.js';
 
 const app = express();
 app.use(cors(), express.json());
 dotenv.config();
 
-//routes 
-app.use(crudRouter);
+//Categories routes 
+app.use(categoriesRouter);
+
+//Games routes 
+app.use(gamesRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
