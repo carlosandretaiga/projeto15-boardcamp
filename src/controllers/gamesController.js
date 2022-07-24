@@ -1,8 +1,33 @@
 import db from '../database/db.js';
 
 export async function getAllGames(req, res) {
+
+  const filterGame = req.query; 
+  let searchGame = '';
+  let searchGameInitials = [];
+  let searchGameToUse = '';
+
+  if(filterGame.name === undefined) {
+    searchGameToUse = '%';
+  } else {
+    searchGame = filterGame.name.toUpperCase().split("");
+    for(let i=0; i < searchGame.length; i++) {
+      searchGameInitials.push(searchGame[i] + '%');
+
+    }
+    searchGameToUse = searchGameInitials.join(" ");
+    
+  }
+
   try {
-    const games = await db.query("SELECT * FROM games");
+    const games = await db.query(
+      `SELECT games.*, categories.name AS "categoryName" 
+       FROM games
+       JOIN categories 
+       ON games."categoryId" = categories.id
+       WHERE games.name LIKE '${searchGameToUse}'
+      `
+    );
     //console.log("Categorieas do banco", category.rows);
     res.send(games.rows);
 
