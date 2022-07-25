@@ -1,5 +1,5 @@
 import db from '../database/db.js';
-import dayjs from 'dayjs';
+
 //customers
 export async function getAllCustomers(req, res) {
 
@@ -14,7 +14,6 @@ export async function getAllCustomers(req, res) {
     
   }
 
-  //let day = dayjs().format("DD/MM/YYYY");
 
   try {
     const customers = await db.query(`
@@ -74,6 +73,10 @@ export async function addCustomer(req, res) {
 //UPDATE customer
 export async function updateCustomer(req, res) {
   const {customerId} = req.params; 
+
+  if(isNaN(parseInt(customerId))) {
+    return res.sendStatus(400);
+  }
 
   console.log(customerId)
   try {
